@@ -1,9 +1,13 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
+import { Plus, CircleNotch, WarningCircle } from "@phosphor-icons/react";
 import { createApplication } from "@/app/actions/applications";
 
 const initialState = undefined;
+
+const inputClasses =
+  "w-full rounded-lg border border-zinc-200 bg-background px-3 py-2 text-sm text-foreground placeholder:text-zinc-400 outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/20 dark:border-zinc-800";
 
 export default function AddApplicationForm() {
   const [state, action, pending] = useActionState(createApplication, initialState);
@@ -19,40 +23,36 @@ export default function AddApplicationForm() {
     <form
       ref={formRef}
       action={action}
-      className="grid grid-cols-1 gap-3 rounded-lg border border-black/[.08] p-4 dark:border-white/[.145] sm:grid-cols-2 sm:items-end lg:grid-cols-5"
+      className="grid grid-cols-1 gap-3 rounded-2xl border border-zinc-200 bg-surface p-5 shadow-[0_1px_2px_rgb(0_0_0_/_0.04)] sm:grid-cols-2 sm:items-end lg:grid-cols-5 dark:border-zinc-800"
     >
-      <div className="flex flex-col gap-1">
-        <label htmlFor="companyName" className="text-sm font-medium">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="companyName" className="text-sm font-medium text-foreground">
           Company
         </label>
-        <input
-          id="companyName"
-          name="companyName"
-          required
-          className="rounded border border-black/[.15] px-2 py-1.5 dark:border-white/[.2] dark:bg-black"
-        />
+        <input id="companyName" name="companyName" required className={inputClasses} />
         {state?.errors?.companyName && (
-          <p className="text-xs text-red-600">{state.errors.companyName}</p>
+          <p className="flex items-center gap-1 text-xs text-rose-600 dark:text-rose-400">
+            <WarningCircle size={12} weight="fill" />
+            {state.errors.companyName}
+          </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="roleTitle" className="text-sm font-medium">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="roleTitle" className="text-sm font-medium text-foreground">
           Role
         </label>
-        <input
-          id="roleTitle"
-          name="roleTitle"
-          required
-          className="rounded border border-black/[.15] px-2 py-1.5 dark:border-white/[.2] dark:bg-black"
-        />
+        <input id="roleTitle" name="roleTitle" required className={inputClasses} />
         {state?.errors?.roleTitle && (
-          <p className="text-xs text-red-600">{state.errors.roleTitle}</p>
+          <p className="flex items-center gap-1 text-xs text-rose-600 dark:text-rose-400">
+            <WarningCircle size={12} weight="fill" />
+            {state.errors.roleTitle}
+          </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="dateApplied" className="text-sm font-medium">
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="dateApplied" className="text-sm font-medium text-foreground">
           Date applied
         </label>
         <input
@@ -61,34 +61,37 @@ export default function AddApplicationForm() {
           type="date"
           required
           defaultValue={new Date().toISOString().slice(0, 10)}
-          className="rounded border border-black/[.15] px-2 py-1.5 dark:border-white/[.2] dark:bg-black"
+          className={`${inputClasses} [color-scheme:light] dark:[color-scheme:dark]`}
         />
         {state?.errors?.dateApplied && (
-          <p className="text-xs text-red-600">{state.errors.dateApplied}</p>
+          <p className="flex items-center gap-1 text-xs text-rose-600 dark:text-rose-400">
+            <WarningCircle size={12} weight="fill" />
+            {state.errors.dateApplied}
+          </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-1 lg:col-span-1">
-        <label htmlFor="notes" className="text-sm font-medium">
+      <div className="flex flex-col gap-1.5 lg:col-span-1">
+        <label htmlFor="notes" className="text-sm font-medium text-foreground">
           Notes
         </label>
-        <input
-          id="notes"
-          name="notes"
-          className="rounded border border-black/[.15] px-2 py-1.5 dark:border-white/[.2] dark:bg-black"
-        />
+        <input id="notes" name="notes" className={inputClasses} />
       </div>
 
       <button
         disabled={pending}
         type="submit"
-        className="h-fit rounded-full bg-foreground px-5 py-2 text-sm font-medium text-background transition-colors hover:bg-[#383838] disabled:opacity-60 dark:hover:bg-[#ccc]"
+        className="inline-flex h-fit items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-sm transition-all hover:brightness-110 active:scale-[0.98] disabled:opacity-60 disabled:active:scale-100"
       >
+        {pending ? <CircleNotch size={15} className="animate-spin" /> : <Plus size={15} weight="bold" />}
         {pending ? "Adding..." : "Add application"}
       </button>
 
       {state?.message && (
-        <p className="text-sm text-red-600 sm:col-span-2 lg:col-span-5">{state.message}</p>
+        <p className="flex items-center gap-1.5 text-sm text-rose-600 sm:col-span-2 lg:col-span-5 dark:text-rose-400">
+          <WarningCircle size={14} weight="fill" />
+          {state.message}
+        </p>
       )}
     </form>
   );
