@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tech Interview Timeline Tracker
 
-## Getting Started
+**[Live demo →](https://interview-tracker-ashen.vercel.app)**
 
-First, run the development server:
+A personal CRM for job hunting. I got tired of losing track of which companies I'd applied to, what stage each application was in, and what I'd already told a recruiter — spread across a spreadsheet, my email, and memory. This is a small, single-purpose app that keeps all of it in one place: every application, its current stage in the pipeline, and whatever notes I need to remember for next time.
+
+Nothing more than that. No job board integrations, no analytics dashboards, no reminders — just a clean record of where things stand.
+
+## Features
+
+- **Auth** — email/password signup and login, sessions handled server-side
+- **Track applications** — add a company, role, and date applied in a couple clicks
+- **Status pipeline** — move each application through `Applied → OA → Interview → Offer / Rejected`
+- **Notes** — attach freeform notes to any application (interviewer names, questions asked, follow-ups owed)
+- **Dashboard** — all applications grouped by status, so the state of the job search is visible at a glance
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) (App Router) + React
+- [Prisma](https://www.prisma.io) ORM
+- PostgreSQL, hosted on [Neon](https://neon.tech)
+- [Tailwind CSS](https://tailwindcss.com)
+- Deployed on [Vercel](https://vercel.com)
+
+## Running it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file in the project root with:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+DATABASE_URL="postgresql://..."   # a Postgres connection string (Neon, or any Postgres instance)
+SESSION_SECRET="..."              # a long random string used to sign session cookies
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Push the schema to your database, then start the dev server:
 
-## Learn More
+```bash
+npx prisma db push
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000).
